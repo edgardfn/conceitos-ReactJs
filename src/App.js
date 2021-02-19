@@ -7,31 +7,37 @@ function App() {
   const [ projects, setProjects ] = useState([])
 
 
-  const carregarProjetos = () => {
-    api.get('/projects').then(response => {
+  useEffect(() => {
+    api.get('/repositories').then(response => {
       setProjects(response.data)
     })
-  }
-
-  useEffect(() => {
-    carregarProjetos()
   }, [])
 
 
 
   async function handleAddRepository() {
-    const response = await api.post('/projects', {
-      title: `Novo Projeto ${Date.now()}`,
-      owner: "Edgard Finotti"
-  })
 
-  
-  carregarProjetos()
+    const response = await api.post('/repositories', {
+      title: `Novo Projeto ${Date.now()}`,
+      url:"https://github.com/edgardfn/conceitos-reactJs",
+      techs: "ReactJs"
+    })
+
+    const repositorio = response.data
+    
+    setProjects([...projects, repositorio])
   }
 
   async function handleRemoveRepository(id) {
-    api.delete(`/projects/${id}`).then(response => {
-      carregarProjetos()
+    api.delete(`/repositories/${id}`).then(response => {
+      const novosProjetos = projects.filter((project => {
+        if(project.id === id) {
+          return false
+        }
+        return true
+      }))
+
+      setProjects(novosProjetos)
     }).catch(erro => {
       alert(erro)
     })
