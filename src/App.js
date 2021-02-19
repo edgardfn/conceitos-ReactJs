@@ -5,6 +5,12 @@ import "./styles.css";
 function App() {
   const [ projects, setProjects ] = useState([])
 
+  useEffect(() => {
+    api.get('/projects').then(response => {
+      setProjects(response.data)
+    })
+  }, [])
+
   async function handleAddRepository() {
     // TODO
   }
