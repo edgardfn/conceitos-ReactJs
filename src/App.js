@@ -6,18 +6,29 @@ import "./styles.css";
 function App() {
   const [ projects, setProjects ] = useState([])
 
-  useEffect(() => {
+
+  const carregarProjetos = () => {
     api.get('/projects').then(response => {
       setProjects(response.data)
     })
+  }
+
+  useEffect(() => {
+    carregarProjetos()
   }, [])
+
+
 
   async function handleAddRepository() {
     // TODO
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    api.delete(`/projects/${id}`).then(response => {
+      carregarProjetos()
+    }).catch(erro => {
+      alert(erro)
+    })
   }
 
   return (
