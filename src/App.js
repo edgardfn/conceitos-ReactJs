@@ -20,7 +20,13 @@ function App() {
 
 
   async function handleAddRepository() {
-    // TODO
+    const response = await api.post('/projects', {
+      title: `Novo Projeto ${Date.now()}`,
+      owner: "Edgard Finotti"
+  })
+
+  
+  carregarProjetos()
   }
 
   async function handleRemoveRepository(id) {
